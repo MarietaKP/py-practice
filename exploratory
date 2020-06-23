@@ -1,0 +1,234 @@
+
+## Basic exploration
+
+# Display the number of rows and columns
+nsfg.shape
+# Print the head 
+print(nsfg.head())
+
+# Print information 
+print(nsfg.info())
+
+
+# Print a description
+print(nsfg.describe())
+
+# Display the names of the columns
+nsfg.columns
+
+
+# Print the values
+print(nsfg.values)
+
+# Print the column index 
+print(nsfg.columns)
+
+# Print the row index
+print(nsfg.index)
+
+# Select column birthwgt_oz1: ounces
+ounces = nsfg['birthwgt_oz1']
+
+# Print the first 5 elements of ounces
+print(ounces.head())
+
+#see amount of each unique value for column "outcomes"
+nsfg.outcomes.values_counts()
+
+# Replace the value 8 with NaN in column "nbrnaliv"
+nsfg['nbrnaliv'].replace([8], np.nan, inplace=True)
+
+# Print the values and their frequencies
+print(nsfg['nbrnaliv'].value_counts())
+
+# Select the columns and divide by 100
+agecon = nsfg['agecon'] / 100
+
+# Compute summary statistics
+print(preg_length.describe())
+
+# Display the number of rows and columns
+nsfg.shape
+# Print the head 
+print(nsfg.head())
+
+# Print information 
+print(nsfg.info())
+
+# Print a description
+print(nsfg.describe())
+
+# Display the names of the columns
+nsfg.columns
+
+# Print the values
+print(nsfg.values)
+
+# Print the column index 
+print(nsfg.columns)
+
+# Print the row index
+print(nsfg.index)
+
+# Select column birthwgt_oz1: ounces
+ounces = nsfg['birthwgt_oz1']
+
+# Print the first 5 elements of ounces
+print(ounces.head())
+
+#see amount of each unique value for column "outcomes"
+nsfg.outcomes.values_counts()
+
+# Replace the value 8 with NaN in column "nbrnaliv"
+nsfg['nbrnaliv'].replace([8], np.nan, inplace=True)
+
+# Print the values and their frequencies
+print(nsfg['nbrnaliv'].value_counts())
+
+# Select the columns and divide by 100
+agecon = nsfg['agecon'] / 100
+
+# Compute summary statistics
+print(preg_length.describe())
+
+# Create a Boolean Series for full-term babies
+full_term = nsfg.prglngth>=37
+
+# Filter full-term babies
+full_term = nsfg['prglngth'] >= 37
+
+# Filter single births
+single = nsfg.nbrnaliv==1
+
+# Select the weights of full-term babies using "birth_weight"
+full_term_weight = birth_weight[full_term]
+
+# Compute the mean weight of full-term babies
+print(full_term_weight.mean())
+
+# Compute birth weight for single full-term babies
+single_full_term_weight = birth_weight[full_term & single]
+print('Single full_term mean:', single_full_term_weight.mean())
+
+
+## Plotting with matplotlib
+
+# Plot the histogram
+plt.hist(agecon, bins=20, histtype='step')
+# Label the axes
+plt.xlabel('Age at conception')
+plt.ylabel('Number of pregnancies')
+# Show the figure
+plt.show()
+
+
+# plotting a scatterplot with matplotlib with color, shape and transparency identified
+plt.scatter(cellphone.x, cellphone.y,
+           color='red',
+           marker='s',
+           alpha=0.1)
+plt.ylabel('Latitude')
+plt.xlabel('Longitude')
+plt.show()
+
+
+# Create a bar plot from the DataFrame hours with errors indicated
+plt.bar(hours.officer, hours.avg_hours_worked,
+        # Add error bars
+        yerr=hours.std_hours_worked)
+plt.show()
+
+
+# Plot the number of hours spent on desk work, plot the hours spent on field work on top of desk work
+plt.bar(hours.officer, hours.desk_work, label='Desk Work')
+
+plt.bar(hours.officer, hours.field_work, bottom=hours.desk_work, label='Field Work')
+plt.legend()
+plt.show()
+
+
+## CDF, PDF distributions
+
+# Select the age column PDF / CDF / PMF / K
+age = gss['age']
+
+# Compute the CDF of age
+cdf_age = Cdf(age)
+# Plot it
+cdf_age.plot()
+
+# Label the axes
+plt.xlabel('Age')
+plt.ylabel('CDF')
+plt.show()
+
+# Calculate the CDF of 30
+print(cdf_age(30))
+
+# Calculate the 75th percentile 
+percentile_75th = cdf_income.inverse(0.75)
+
+# Calculate the 25th percentile
+percentile_25th = cdf_income.inverse(0.25)
+
+# Calculate the interquartile range
+iqr = percentile_75th - percentile_25th
+
+# Select realinc
+income = gss.realinc
+
+# Plot the CDFs
+Cdf(income[high]).plot(label='High school')
+Cdf(income[assc]).plot(label='Associate')
+Cdf(income[bach]).plot(label='Bachelor')
+
+# Label the axes
+plt.xlabel('Income (1986 USD)')
+plt.ylabel('CDF')
+plt.legend()
+plt.show()
+# distribution
+# Extract realinc and compute its log
+income = gss['realinc']
+log_income = np.log10(income)
+
+# Compute mean and standard deviation
+mean = log_income.mean()
+std = log_income.std()
+print(mean, std)
+
+# Create and plot the Cdf of log_income
+Cdf(log_income).plot()
+
+# Compute mean and standard deviation
+mean, std = log_income.mean(), log_income.std()
+
+# Make a norm object
+from scipy.stats import norm
+dist = norm(mean,std)
+
+# Comparing CDFs
+
+# Extract realinc and compute its log
+log_income = np.log10(gss['realinc'])
+
+# dist is a scipy.stats.norm object that provides the .cdf() and .pdf() method. Pass it xs and store the result as ys.  
+# The Cdf object provides a .plot() method. 
+# np.linspace return evenly spaced numbers over a specified interval. 
+#   returns num evenly spaced samples, calculated over the interval [start, stop].
+#   the endpoint of the interval can optionally be excluded.
+
+from scipy.stats import norm
+dist = norm(mean, std)
+
+# Evaluate the model CDF
+xs = np.linspace(2, 5.5)
+ys = dist.cdf(xs)
+
+# Plot the model CDF
+plt.clf()
+plt.plot(xs, ys, color='gray') 
+
+# Comparing PDFs
+# To create a KDE plot, you can use Seaborn's kdeplot() function. Here, Seaborn has been imported as sns.
+
