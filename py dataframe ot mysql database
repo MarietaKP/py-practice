@@ -1,0 +1,23 @@
+# import libs.
+import pandas as pd
+
+from sqlalchemy 
+import create_engine
+
+# read file
+new = pd.read_csv("Acquisition_2015Q1 - sample.txt", sep= "|", header=None )
+print(new.head())
+
+# exploratory
+new.shape
+print(new.info())
+new.isnull().sum()
+
+# create sqlalchemy engine
+engine = create_engine("mysql+pymysql://{user}:{pw}@localhost/{db}"
+                       .format(user="root",
+                               pw="12345",
+                               db="employee"))
+                               
+new.fillna(0).to_sql('Acquisition', con = engine, if_exists = 'append',
+            chunksize = 1000)                               
